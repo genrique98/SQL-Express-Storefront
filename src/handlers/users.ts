@@ -1,8 +1,9 @@
-import express, { Request, Response } from 'express'
-import { User, UserStore } from '../models/users.js'
+import express, { Request, Response} from 'express'
+import { User, UserStore } from '../models/users'
 import jwt, { Secret } from 'jsonwebtoken'
-import verifyAuthToken from '../middleware/auth.js'
-
+import verifyAuthToken from '../middleware/auth'
+import cors from 'cors'
+import bodyParser, { json } from 'body-parser';
 const store = new UserStore()
 
 const index = async (_req: Request, res: Response) => {
@@ -15,7 +16,7 @@ const index = async (_req: Request, res: Response) => {
     
 }
 
-const show = async (req: Request, res: Response) => {
+const show = async (req: Request, res: Response): Promise<void> => {
     try {
         const users = await store.show(req.body.id)
         res.json(users)
@@ -25,12 +26,13 @@ const show = async (req: Request, res: Response) => {
     
 }
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
+    let request = req.body;
     const user: User = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        username: req.body.username,
-        password: req.body.password,
+        firstName: request.firstName,
+        lastName: request.lastName,
+        username: request.username,
+        password: request.password,
     }
     const { TOKEN_SECRET } = process.env;
     try {
@@ -43,7 +45,7 @@ const create = async (req: Request, res: Response) => {
     
 }
 
-const authenticate = async (req: Request, res: Response) => {
+const authenticate = async (req: Request, res: Response): Promise<void> => {
     const user: User = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -61,11 +63,12 @@ const authenticate = async (req: Request, res: Response) => {
     }
   }
 
+var jsonParser = bodyParser.json()
 
-const users_routes = (app: express.Application) => {
-    app.get('/users', verifyAuthToken, index)
-    app.get('/users/:id', verifyAuthToken, show) 
-    app.post('/users', create)
+const users_routes = (app: express.Router): void =>  {
+    app.get('/users', verifyAuthToken, index);
+    app.get('/users/:id', verifyAuthToken, show); 
+    app.post('/users', jsonParser, create);
 }
 
-export default users_routes
+export default users_routes;

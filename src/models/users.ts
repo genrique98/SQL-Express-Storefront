@@ -1,6 +1,7 @@
-import Client from '../database.js'
+import Client from '../database'
 import bcrypt from 'bcrypt'
 import { resourceUsage } from 'process';
+
 
 export type User = {
     id?: number;
@@ -37,8 +38,21 @@ export class UserStore {
     }
     
     async create(user: User): Promise<User[]> {
+        var retries = 10;
+        while (retries) {
+            try {
+                await Client.connect();
+            } catch (err) {
+                console.log(err);
+                retries -= 1;
+                console.log(`retries left: ${retries}`);
+                // wait 5 seconds
+                await new Promise(res => setTimeout(res, 5000));
+            }
+        }
         try {
             const conn = await Client.connect();
+
             const sql = 'INSERT INTO users (firstName, lastName, username, password) VALUES ($1, $2, $3, $4) RETURNING *';
             const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
             // const pepper = BCRYPT_PASSWORD; const sal
@@ -55,8 +69,9 @@ export class UserStore {
 
             return newUser
         } catch (err) {
-            throw new Error(`Could not add user ${user.firstName}. Error: ${err}`);
+            throw new Error(`Could not add user ${user.firstName}. ${err}`);
         }
+    
     }
 
     async authenticate(username: string, password: string): Promise<User | null> {
