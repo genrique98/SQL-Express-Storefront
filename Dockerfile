@@ -8,6 +8,9 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 10533
+COPY database.json .
+COPY .env .
+
+EXPOSE 3000
 
 CMD [ "npm", "run", "final" ]
