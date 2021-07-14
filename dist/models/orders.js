@@ -95,7 +95,7 @@ var OrderStore = /** @class */ (function () {
         });
     };
     // add product to cart
-    OrderStore.prototype.addProduct = function (quantity, orderId, productId) {
+    OrderStore.prototype.addProduct = function (order_product) {
         return __awaiter(this, void 0, void 0, function () {
             var sql, conn, args, result, order, err_3;
             return __generator(this, function (_a) {
@@ -106,7 +106,7 @@ var OrderStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        args = [quantity, orderId, productId];
+                        args = [order_product.quantity, order_product.orderId, order_product.productId];
                         return [4 /*yield*/, conn.query(sql, args)];
                     case 2:
                         result = _a.sent();
@@ -115,7 +115,7 @@ var OrderStore = /** @class */ (function () {
                         return [2 /*return*/, order];
                     case 3:
                         err_3 = _a.sent();
-                        throw new Error("Could not add product " + productId + " to order " + orderId + ": " + err_3);
+                        throw new Error("Could not add product " + order_product.productId + " to order " + order_product.orderId + ": " + err_3);
                     case 4: return [2 /*return*/];
                 }
             });
