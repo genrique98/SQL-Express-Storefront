@@ -39,28 +39,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var orders_1 = require("../models/orders");
+var products_1 = require("../models/products");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var auth_1 = __importDefault(require("../middleware/auth"));
-var store = new orders_1.OrderStore();
-// const index = async (_req: Request, res: Response) => {
-//     try {
-//         const orders = await store.index()
-//         res.json(orders)
-//     } catch (err) {
-//         console.log(err)
-//     }
-// }
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users, err_1;
+var body_parser_1 = __importDefault(require("body-parser"));
+var store = new products_1.ProductStore();
+var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var products, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.show(req.body.id)];
+                return [4 /*yield*/, store.index()];
             case 1:
-                users = _a.sent();
-                res.json(users);
+                products = _a.sent();
+                res.json(products);
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
@@ -70,83 +62,57 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
         }
     });
 }); };
-var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var order, TOKEN_SECRET, newOrder, token, err_2;
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var products, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                order = {
-                    user_id: req.body.user_id,
-                    status: req.body.status,
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.show(req.body.id)];
+            case 1:
+                products = _a.sent();
+                res.json(products);
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                console.log(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var request, product, TOKEN_SECRET, newProduct, token, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                request = req.body;
+                product = {
+                    name: request.name,
+                    price: request.price,
                 };
                 TOKEN_SECRET = process.env.TOKEN_SECRET;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, store.create(order)];
+                return [4 /*yield*/, store.create(product)];
             case 2:
-                newOrder = _a.sent();
-                token = jsonwebtoken_1.default.sign({ user: newOrder }, TOKEN_SECRET);
+                newProduct = _a.sent();
+                token = jsonwebtoken_1.default.sign({ user: newProduct }, TOKEN_SECRET);
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:
-                err_2 = _a.sent();
-                console.log(err_2);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); };
-var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var request, order_product, addedProduct, err_3;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                request = req.body;
-                order_product = {
-                    quantity: request.quantity,
-                    orderId: request.orderId,
-                    productId: request.productId,
-                };
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, store.addProduct(order_product)];
-            case 2:
-                addedProduct = _a.sent();
-                res.json(addedProduct);
-                return [3 /*break*/, 4];
-            case 3:
                 err_3 = _a.sent();
-                res.status(400);
-                res.json(err_3);
+                console.log(err_3);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
-// const authenticate = async (req: Request, res: Response) => {
-//     const user: User = {
-//         firstName: req.body.firstName,
-//         lastName: req.body.lastName,
-//         username: req.body.username,
-//         password: req.body.password,
-//     }
-//     const { TOKEN_SECRET } = process.env;
-//     try {
-//         const oldUser = await store.authenticate(user.username, user.password)
-//         var token = jwt.sign({ user: oldUser }, TOKEN_SECRET as Secret);
-//         res.json(token)
-//     } catch(error) {
-//         res.status(401)
-//         res.json({ error })
-//     }
-//   }
-var order_routes = function (app) {
-    // app.get('/orders', verifyAuthToken, index)
-    app.get('/orders/:id', auth_1.default, show);
-    app.post('/orders', auth_1.default, create); // is this like add product?
-    // add product to cart
-    app.post('/orders/:id/products', auth_1.default, addProduct);
+var jsonParser = body_parser_1.default.json();
+var products_routes = function (app) {
+    app.get('/products', index);
+    app.get('/products/:id', show);
+    app.post('/products', jsonParser, create); // verifyAuthToken
 };
-exports.default = order_routes;
+exports.default = products_routes;

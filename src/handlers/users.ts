@@ -36,6 +36,7 @@ const create = async (req: Request, res: Response): Promise<void> => {
     }
     const { TOKEN_SECRET } = process.env;
     try {
+        //@ts-ignore
         const newUser = await store.create(user)
         var token = jwt.sign({ user: newUser }, TOKEN_SECRET as Secret);
         res.json(token)

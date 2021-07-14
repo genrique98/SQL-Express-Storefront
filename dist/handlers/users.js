@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var users_1 = require("../models/users");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var auth_1 = __importDefault(require("../middleware/auth"));
-var cors_1 = __importDefault(require("cors"));
+var body_parser_1 = __importDefault(require("body-parser"));
 var store = new users_1.UserStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users, err_1;
@@ -83,15 +83,16 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, TOKEN_SECRET, newUser, token, err_3;
+    var request, user, TOKEN_SECRET, newUser, token, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                request = req.body;
                 user = {
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    username: req.body.username,
-                    password: req.body.password,
+                    firstName: request.firstName,
+                    lastName: request.lastName,
+                    username: request.username,
+                    password: request.password,
                 };
                 TOKEN_SECRET = process.env.TOKEN_SECRET;
                 _a.label = 1;
@@ -141,9 +142,10 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
         }
     });
 }); };
+var jsonParser = body_parser_1.default.json();
 var users_routes = function (app) {
     app.get('/users', auth_1.default, index);
     app.get('/users/:id', auth_1.default, show);
-    app.post('/users', cors_1.default, create);
+    app.post('/users', jsonParser, create);
 };
 exports.default = users_routes;

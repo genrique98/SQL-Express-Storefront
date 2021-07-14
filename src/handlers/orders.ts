@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express'
-import { Order, OrderStore } from '../models/orders'
+import { Order, OrderStore, Order_product } from '../models/orders'
 import jwt, { Secret } from 'jsonwebtoken'
 import verifyAuthToken from '../middleware/auth'
 
@@ -41,13 +41,17 @@ const create = async (req: Request, res: Response): Promise<void> => {
     
 }
 
-const addProduct = async (_req: Request, res: Response): Promise<void> => {
-    const orderId: string = _req.params.id
-    const productId: string = _req.body.productId
-    const quantity: number = parseInt(_req.body.quantity)
+const addProduct = async (req: Request, res: Response): Promise<void> => {
+    let request = req.body;
+
+    const order_product: Order_product = {
+        quantity: request.quantity,
+        orderId: request.orderId,
+        productId: request.productId,
+    }
   
     try {
-      const addedProduct = await store.addProduct(quantity, orderId, productId)
+      const addedProduct = await store.addProduct(order_product)
       res.json(addedProduct)
     } catch(err) {
       res.status(400)
@@ -74,12 +78,12 @@ const addProduct = async (_req: Request, res: Response): Promise<void> => {
 //   }
 
 
-const order_routes = (app: express.Application): void => {
+const order_routes = (app: express.Router): void => {
     // app.get('/orders', verifyAuthToken, index)
     app.get('/orders/:id', verifyAuthToken, show) 
-    app.post('/orders', verifyAuthToken, create)
+    app.post('/orders', verifyAuthToken, create) // is this like add product?
     
-    // add product
+    // add product to cart
     app.post('/orders/:id/products', verifyAuthToken, addProduct)
 
 }
