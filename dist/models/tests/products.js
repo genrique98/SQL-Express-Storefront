@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var users_1 = require("../users");
-var store = new users_1.UserStore();
-describe("User Model", function () {
+var products_1 = require("../products");
+var store = new products_1.ProductStore();
+describe("Product Model", function () {
     it('should have an index method', function () {
         expect(store.index).toBeDefined();
     });
@@ -48,31 +48,27 @@ describe("User Model", function () {
     it('should have a create method', function () {
         expect(store.create).toBeDefined();
     });
-    it('create method should add a book', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var newUser, user;
+    it('create method should add a product', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var newProduct, product;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, store.create({
-                        firstName: 'Gabriel',
-                        lastName: 'Ramirez',
-                        username: 'gabrielr',
-                        password: '123'
+                        name: 'book',
+                        price: 10,
                     })];
                 case 1:
-                    newUser = _a.sent();
-                    user = {
+                    newProduct = _a.sent();
+                    product = {
                         id: 1,
-                        firstName: 'Gabriel',
-                        lastName: 'Ramirez',
-                        username: 'gabrielr',
-                        password: '123'
+                        name: 'book',
+                        price: 10
                     };
-                    expect(newUser).toContain(user);
+                    expect(newProduct).toContain(product);
                     return [2 /*return*/];
             }
         });
     }); });
-    it('index method should return a list of users', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('index method should return a list of products', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -84,7 +80,7 @@ describe("User Model", function () {
             }
         });
     }); });
-    it('show method should return the correct user', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('show method should return the correct product', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {

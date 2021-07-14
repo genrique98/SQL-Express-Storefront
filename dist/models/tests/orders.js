@@ -36,55 +36,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var users_1 = require("../users");
-var store = new users_1.UserStore();
+var orders_1 = require("../orders");
+var store = new orders_1.OrderStore();
 describe("User Model", function () {
-    it('should have an index method', function () {
-        expect(store.index).toBeDefined();
-    });
     it('should have a show method', function () {
         expect(store.show).toBeDefined();
     });
-    it('should have a create method', function () {
+    it('should have an create method', function () {
         expect(store.create).toBeDefined();
     });
-    it('create method should add a book', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var newUser, user;
+    it('should have an addProduct method', function () {
+        expect(store.addProduct).toBeDefined();
+    });
+    it('create method should create an order', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var newOrder, order;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, store.create({
-                        firstName: 'Gabriel',
-                        lastName: 'Ramirez',
-                        username: 'gabrielr',
-                        password: '123'
+                        user_id: 1
                     })];
                 case 1:
-                    newUser = _a.sent();
-                    user = {
+                    newOrder = _a.sent();
+                    order = {
                         id: 1,
-                        firstName: 'Gabriel',
-                        lastName: 'Ramirez',
-                        username: 'gabrielr',
-                        password: '123'
+                        user_id: 1,
+                        status: 'active'
                     };
-                    expect(newUser).toContain(user);
+                    expect(newOrder).toContain(order);
                     return [2 /*return*/];
             }
         });
     }); });
-    it('index method should return a list of users', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, store.index()];
-                case 1:
-                    result = _a.sent();
-                    expect(result).toBeTruthy();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('show method should return the correct user', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('show method should return the correct order', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -92,6 +75,28 @@ describe("User Model", function () {
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual(result);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('addProduct method should add a product to order', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var newOrderProduct, orderProduct;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, store.addProduct({
+                        quantity: 1,
+                        orderId: 1,
+                        productId: 1
+                    })];
+                case 1:
+                    newOrderProduct = _a.sent();
+                    orderProduct = {
+                        id: 1,
+                        quantity: 1,
+                        orderId: 1,
+                        productId: 1
+                    };
+                    expect(newOrderProduct).toContain(orderProduct);
                     return [2 /*return*/];
             }
         });
