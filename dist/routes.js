@@ -5,12 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var users_1 = __importDefault(require("./handlers/users"));
+var products_1 = __importDefault(require("./handlers/products"));
 var routes = express_1.default.Router();
 users_1.default(routes);
-// products_routes(routes);
+products_1.default(routes);
 // orders_routes(routes);
-//cant use cors????
-routes.get('/', function (_req, res, next) {
+routes.get('/', function (_req, res, _next) {
     res.status(200).send('Hello World!');
 });
 exports.default = routes;
