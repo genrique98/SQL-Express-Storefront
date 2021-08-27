@@ -1,6 +1,5 @@
 import Client from '../database'
 import bcrypt from 'bcrypt'
-import { resourceUsage } from 'process';
 
 export type User = {
     id?: number;
@@ -37,21 +36,8 @@ export class UserStore {
     }
     
     async create(user: User): Promise<User[]> {
-        var retries = 5;
-        while (retries) {
-            try {
-                await Client.connect();
-            } catch (err) {
-                console.log(err);
-                retries -= 1;
-                console.log(`retries left: ${retries}`);
-                // wait 5 seconds
-                await new Promise(res => setTimeout(res, 5000));
-            }
-        }
         try {
             const conn = await Client.connect();
-
             const sql = 'INSERT INTO users (firstName, lastName, username, password) VALUES ($1, $2, $3, $4) RETURNING *';
             const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
             
@@ -60,12 +46,11 @@ export class UserStore {
                 parseInt((SALT_ROUNDS as unknown) as string) 
             )
             const args = [user.firstName, user.lastName, user.username, hash];
-            console.log('works')
+            
             const result = await conn.query(sql, args);
-            console.log('works')
+            
             const newUser = result.rows[0];
             conn.release();
-
             return newUser
         } catch (err) {
             throw new Error(`Could not add user ${user.firstName}. ${err}`);
@@ -81,16 +66,15 @@ export class UserStore {
 
             const { BCRYPT_PASSWORD } = process.env;
 
-            conn.release(); // maybe do later
-
-            console.log(password+BCRYPT_PASSWORD)
+            conn.release();
 
             if (result.rows.length) {
                 const user = result.rows[0]
-                // console.log(user)
                 if (bcrypt.compareSync(password + BCRYPT_PASSWORD, user.password)) {
+                    console.log('user is verified')
                     return user
                 } else {
+                    console.log('bcrypt error')
                     return null
                 }
             }

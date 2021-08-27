@@ -42,7 +42,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var users_1 = require("../models/users");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var auth_1 = __importDefault(require("../middleware/auth"));
-var body_parser_1 = __importDefault(require("body-parser"));
 var store = new users_1.UserStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users, err_1;
@@ -69,9 +68,10 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.show(req.body.id)];
+                return [4 /*yield*/, store.show(req.params.id)]; //(parseInt( (req.params.id as unknown) as string))
             case 1:
-                users = _a.sent();
+                users = _a.sent() //(parseInt( (req.params.id as unknown) as string))
+                ;
                 res.json(users);
                 return [3 /*break*/, 3];
             case 2:
@@ -113,7 +113,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, TOKEN_SECRET, oldUser, token, error_1;
+    var user, TOKEN_SECRET, authUser, token, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -129,8 +129,8 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                 _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, store.authenticate(user.username, user.password)];
             case 2:
-                oldUser = _a.sent();
-                token = jsonwebtoken_1.default.sign({ user: oldUser }, TOKEN_SECRET);
+                authUser = _a.sent();
+                token = jsonwebtoken_1.default.sign({ user: authUser }, TOKEN_SECRET);
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:
@@ -142,10 +142,10 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
         }
     });
 }); };
-var jsonParser = body_parser_1.default.json();
 var users_routes = function (app) {
+    app.post('/auth', authenticate);
     app.get('/users', auth_1.default, index);
     app.get('/users/:id', auth_1.default, show);
-    app.post('/users', jsonParser, create);
+    app.post('/users', create);
 };
 exports.default = users_routes;

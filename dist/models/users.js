@@ -95,61 +95,35 @@ var UserStore = /** @class */ (function () {
     };
     UserStore.prototype.create = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var retries, err_3, conn, sql, _a, BCRYPT_PASSWORD, SALT_ROUNDS, hash, args, result, newUser, err_4;
+            var conn, sql, _a, BCRYPT_PASSWORD, SALT_ROUNDS, hash, args, result, newUser, err_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        retries = 5;
-                        _b.label = 1;
+                        _b.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.default.connect()];
                     case 1:
-                        if (!retries) return [3 /*break*/, 7];
-                        _b.label = 2;
-                    case 2:
-                        _b.trys.push([2, 4, , 6]);
-                        return [4 /*yield*/, database_1.default.connect()];
-                    case 3:
-                        _b.sent();
-                        return [3 /*break*/, 6];
-                    case 4:
-                        err_3 = _b.sent();
-                        console.log(err_3);
-                        retries -= 1;
-                        console.log("retries left: " + retries);
-                        // wait 5 seconds
-                        return [4 /*yield*/, new Promise(function (res) { return setTimeout(res, 5000); })];
-                    case 5:
-                        // wait 5 seconds
-                        _b.sent();
-                        return [3 /*break*/, 6];
-                    case 6: return [3 /*break*/, 1];
-                    case 7:
-                        _b.trys.push([7, 10, , 11]);
-                        return [4 /*yield*/, database_1.default.connect()];
-                    case 8:
                         conn = _b.sent();
                         sql = 'INSERT INTO users (firstName, lastName, username, password) VALUES ($1, $2, $3, $4) RETURNING *';
                         _a = process.env, BCRYPT_PASSWORD = _a.BCRYPT_PASSWORD, SALT_ROUNDS = _a.SALT_ROUNDS;
                         hash = bcrypt_1.default.hashSync(user.password + BCRYPT_PASSWORD, parseInt(SALT_ROUNDS));
                         args = [user.firstName, user.lastName, user.username, hash];
-                        console.log('works');
                         return [4 /*yield*/, conn.query(sql, args)];
-                    case 9:
+                    case 2:
                         result = _b.sent();
-                        console.log('works');
                         newUser = result.rows[0];
                         conn.release();
                         return [2 /*return*/, newUser];
-                    case 10:
-                        err_4 = _b.sent();
-                        throw new Error("Could not add user " + user.firstName + ". " + err_4);
-                    case 11: return [2 /*return*/];
+                    case 3:
+                        err_3 = _b.sent();
+                        throw new Error("Could not add user " + user.firstName + ". " + err_3);
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
     UserStore.prototype.authenticate = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, BCRYPT_PASSWORD, user, err_5;
+            var conn, sql, result, BCRYPT_PASSWORD, user, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -162,22 +136,22 @@ var UserStore = /** @class */ (function () {
                     case 2:
                         result = _a.sent();
                         BCRYPT_PASSWORD = process.env.BCRYPT_PASSWORD;
-                        conn.release(); // maybe do later
-                        console.log(password + BCRYPT_PASSWORD);
+                        conn.release();
                         if (result.rows.length) {
                             user = result.rows[0];
-                            // console.log(user)
                             if (bcrypt_1.default.compareSync(password + BCRYPT_PASSWORD, user.password)) {
+                                console.log('user is verified');
                                 return [2 /*return*/, user];
                             }
                             else {
+                                console.log('bcrypt error');
                                 return [2 /*return*/, null];
                             }
                         }
                         return [2 /*return*/, null];
                     case 3:
-                        err_5 = _a.sent();
-                        throw new Error("Could not authenticate user " + username + ". Error: " + err_5);
+                        err_4 = _a.sent();
+                        throw new Error("Could not authenticate user " + username + ". Error: " + err_4);
                     case 4: return [2 /*return*/];
                 }
             });
