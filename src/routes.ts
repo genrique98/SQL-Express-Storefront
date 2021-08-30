@@ -7,12 +7,10 @@ const routes: Router = express.Router();
 
 users_routes(routes);
 products_routes(routes);
-// orders_routes(routes);
+orders_routes(routes);
 
 routes.get('/', (_req: express.Request, res: express.Response, _next: express.NextFunction): void => {
     res.status(200).send('Hello World!');
 });
-
-
 
 export default routes;
