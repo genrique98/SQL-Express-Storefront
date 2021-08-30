@@ -12,7 +12,6 @@ var port = process.env.PORT || 3000;
 app.use(body_parser_1.default.json());
 app.use(cors_1.default());
 app.use('/', routes_1.default);
-// users_routes(app);
 app.listen(port, function () {
     console.log("server started at http://localhost:" + port);
 });
