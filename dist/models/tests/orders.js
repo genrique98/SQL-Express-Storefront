@@ -85,16 +85,14 @@ describe("User Model", function () {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, store.addProduct({
                         quantity: 1,
-                        orderId: 1,
-                        productId: 1
+                        orderId: 1
                     })];
                 case 1:
                     newOrderProduct = _a.sent();
                     orderProduct = {
                         id: 1,
                         quantity: 1,
-                        orderId: 1,
-                        productId: 1
+                        orderId: 1
                     };
                     expect(newOrderProduct).toContain(orderProduct);
                     return [2 /*return*/];

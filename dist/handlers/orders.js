@@ -43,24 +43,16 @@ var orders_1 = require("../models/orders");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var auth_1 = __importDefault(require("../middleware/auth"));
 var store = new orders_1.OrderStore();
-// const index = async (_req: Request, res: Response) => {
-//     try {
-//         const orders = await store.index()
-//         res.json(orders)
-//     } catch (err) {
-//         console.log(err)
-//     }
-// }
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users, err_1;
+var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var orders, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.show(req.body.id)];
+                return [4 /*yield*/, store.index()];
             case 1:
-                users = _a.sent();
-                res.json(users);
+                orders = _a.sent();
+                res.json(orders);
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
@@ -70,8 +62,27 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
         }
     });
 }); };
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var order, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.show(req.params.id)];
+            case 1:
+                order = _a.sent();
+                res.json(order);
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                console.log(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var order, TOKEN_SECRET, newOrder, token, err_2;
+    var order, TOKEN_SECRET, newOrder, token, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -86,27 +97,26 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 return [4 /*yield*/, store.create(order)];
             case 2:
                 newOrder = _a.sent();
-                token = jsonwebtoken_1.default.sign({ user: newOrder }, TOKEN_SECRET);
+                token = jsonwebtoken_1.default.sign({ order: newOrder }, TOKEN_SECRET);
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:
-                err_2 = _a.sent();
-                console.log(err_2);
+                err_3 = _a.sent();
+                console.log(err_3);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
 var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var request, order_product, addedProduct, err_3;
+    var request, order_product, addedProduct, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 request = req.body;
                 order_product = {
                     quantity: request.quantity,
-                    orderId: request.orderId,
-                    productId: request.productId,
+                    orderId: parseInt(req.params.id), // req.body.orderId,
                 };
                 _a.label = 1;
             case 1:
@@ -117,36 +127,18 @@ var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 res.json(addedProduct);
                 return [3 /*break*/, 4];
             case 3:
-                err_3 = _a.sent();
+                err_4 = _a.sent();
                 res.status(400);
-                res.json(err_3);
+                res.json(err_4);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
-// const authenticate = async (req: Request, res: Response) => {
-//     const user: User = {
-//         firstName: req.body.firstName,
-//         lastName: req.body.lastName,
-//         username: req.body.username,
-//         password: req.body.password,
-//     }
-//     const { TOKEN_SECRET } = process.env;
-//     try {
-//         const oldUser = await store.authenticate(user.username, user.password)
-//         var token = jwt.sign({ user: oldUser }, TOKEN_SECRET as Secret);
-//         res.json(token)
-//     } catch(error) {
-//         res.status(401)
-//         res.json({ error })
-//     }
-//   }
 var order_routes = function (app) {
-    // app.get('/orders', verifyAuthToken, index)
-    app.get('/orders/:id', auth_1.default, show);
-    app.post('/orders', auth_1.default, create); // is this like add product?
-    // add product to cart
-    app.post('/orders/:id/products', auth_1.default, addProduct);
+    app.get('/orders', auth_1.default, index); // show all orders (admin auth)
+    app.get('/orders/users/:id', auth_1.default, show); // show current cart of user -> complete data shape
+    app.post('/orders', auth_1.default, create); // create new order
+    app.post('/orders/:id/products', auth_1.default, addProduct); // add product to cart(specific order)
 };
 exports.default = order_routes;

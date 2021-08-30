@@ -41,7 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var products_1 = require("../models/products");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var body_parser_1 = __importDefault(require("body-parser"));
+var auth_1 = __importDefault(require("../middleware/auth"));
 var store = new products_1.ProductStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var products, err_1;
@@ -68,7 +68,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.show(req.body.id)];
+                return [4 /*yield*/, store.show(req.params.id)];
             case 1:
                 products = _a.sent();
                 res.json(products);
@@ -90,6 +90,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 product = {
                     name: request.name,
                     price: request.price,
+                    category: request.category,
                 };
                 TOKEN_SECRET = process.env.TOKEN_SECRET;
                 _a.label = 1;
@@ -98,7 +99,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 return [4 /*yield*/, store.create(product)];
             case 2:
                 newProduct = _a.sent();
-                token = jsonwebtoken_1.default.sign({ user: newProduct }, TOKEN_SECRET);
+                token = jsonwebtoken_1.default.sign({ product: newProduct }, TOKEN_SECRET);
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:
@@ -109,10 +110,9 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
-var jsonParser = body_parser_1.default.json();
 var products_routes = function (app) {
-    app.get('/products', index);
-    app.get('/products/:id', show);
-    app.post('/products', jsonParser, create); // verifyAuthToken
+    app.get('/products', auth_1.default, index);
+    app.get('/products/:id', auth_1.default, show);
+    app.post('/products', auth_1.default, create);
 };
 exports.default = products_routes;
