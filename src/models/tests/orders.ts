@@ -37,14 +37,12 @@ describe("User Model", () => {
   it('addProduct method should add a product to order', async () => {
     const newOrderProduct = await store.addProduct({
       quantity: 1,
-      orderId: 1,
-      productId: 1
+      orderId: 1
     });
     const orderProduct: Order_product = {
         id: 1,
         quantity: 1,
-        orderId: 1,
-        productId: 1
+        orderId: 1
     };
 
     expect(newOrderProduct).toContain(orderProduct);
