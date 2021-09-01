@@ -31,7 +31,7 @@ Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar,
 
 ### 2.  DB Creation and Migrations
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+Now that you have the structure of the database outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
 
 You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
 
@@ -52,3 +52,30 @@ Add JWT functionality as shown in the course. Make sure that JWTs are required f
 Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
 
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+
+
+
+todo:
+- fix no specs found
+- readme
+
+docker exec -it sql-express-storefront_postgres_1 postgres psql -U user storefront_dev
+
+docker exec -it sql-express-storefront postgres psql -U user storefront_dev
+
+docker run --name test-postgres -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
+
+docker run --name some-postgres -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
+
+docker run postgres -e POSTGRES_PASSWORD=password 
+
+
+
+docker compose up
+docker exec -it sql-express-storefront_postgres_1 bash
+psql -U user storefront_dev
+
+\conninfo
+
+
+/////// docker run -p 5000:3000 sql-express-storefront
