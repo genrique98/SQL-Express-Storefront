@@ -3,29 +3,23 @@ version: '3.9'
 services:   
   postgres:
     image: postgres
-    # env_file:
-    #   - .env
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: user
-      POSTGRES_DB: storefront_dev
-      POSTGRES_HOST: localhost
-      ENV: dev
-
+    env_file:
+      - .env
     volumes:
       - './postgres:/var/lib/postgresql/data'
     ports:
-      - "5432:5432"
+      - '5432:5432'
 
   web:
     build: .
+    # command: ["npm", "run", "migrate"]
     links:
       - postgres
     image: sql-express-storefront
     depends_on: 
       - postgres
     ports: 
-      - "3000:3000"
+      - '3000:3000'
     env_file:
       - .env
 
