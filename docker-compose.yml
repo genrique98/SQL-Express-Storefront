@@ -3,27 +3,29 @@ version: '3.9'
 services:   
   postgres:
     image: postgres
-    ports:
-      - '5432:5432'
-    env_file:
-    # environment: 
-      - .env
-      # POSTGRES_HOST: localhost
-      # POSTGRES_PASSWORD: postgres
-      # POSTGRES_USER: postgres
-      # POSTGRES_DB: storefront_dev
+    # env_file:
+    #   - .env
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: storefront_dev
+
     volumes:
       - './postgres:/var/lib/postgresql/data'
+    ports:
+      - "5432:5432"
 
   web:
     build: .
+    links:
+      - postgres
     image: sql-express-storefront
     depends_on: 
       - postgres
     ports: 
-      - '3000:3000'
-    # env_file:
-    #   - .env
+      - "3000:3000"
+    env_file:
+      - .env
 
 volumes:
   postgres:
