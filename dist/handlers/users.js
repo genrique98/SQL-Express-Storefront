@@ -68,10 +68,9 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.show(req.params.id)]; //(parseInt( (req.params.id as unknown) as string))
+                return [4 /*yield*/, store.show(req.params.id)];
             case 1:
-                users = _a.sent() //(parseInt( (req.params.id as unknown) as string))
-                ;
+                users = _a.sent();
                 res.json(users);
                 return [3 /*break*/, 3];
             case 2:

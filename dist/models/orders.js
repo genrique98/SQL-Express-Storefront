@@ -118,7 +118,6 @@ var OrderStore = /** @class */ (function () {
             });
         });
     };
-    // add product to cart
     OrderStore.prototype.addProduct = function (order_product) {
         return __awaiter(this, void 0, void 0, function () {
             var sql, conn, args, result, order, err_4;

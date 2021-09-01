@@ -42,34 +42,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.connection = void 0;
 var database_1 = __importDefault(require("../database"));
 // test connection to database
-var connection = function () {
-    var retries = 5;
-    while (retries) {
-        (function () { return __awaiter(void 0, void 0, void 0, function () {
-            var err_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 4]);
-                        return [4 /*yield*/, database_1.default.connect()];
-                    case 1:
-                        _a.sent();
-                        return [3 /*break*/, 4];
-                    case 2:
-                        err_1 = _a.sent();
-                        console.log(err_1);
-                        retries -= 1;
-                        console.log("retries left: " + retries);
-                        // wait 5 seconds
-                        return [4 /*yield*/, new Promise(function (res) { return setTimeout(res, 1000); })];
-                    case 3:
-                        // wait 5 seconds
-                        _a.sent();
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        }); });
-    }
-};
+var connection = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var retries, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                retries = 5;
+                _a.label = 1;
+            case 1:
+                if (!retries) return [3 /*break*/, 7];
+                _a.label = 2;
+            case 2:
+                _a.trys.push([2, 4, , 6]);
+                return [4 /*yield*/, database_1.default.connect()];
+            case 3:
+                _a.sent();
+                return [3 /*break*/, 6];
+            case 4:
+                err_1 = _a.sent();
+                console.log(err_1);
+                retries -= 1;
+                console.log("retries left: " + retries);
+                // wait 5 seconds
+                return [4 /*yield*/, new Promise(function (res) { return setTimeout(res, 1000); })];
+            case 5:
+                // wait 5 seconds
+                _a.sent();
+                return [3 /*break*/, 6];
+            case 6: return [3 /*break*/, 1];
+            case 7: return [2 /*return*/];
+        }
+    });
+}); };
 exports.connection = connection;
