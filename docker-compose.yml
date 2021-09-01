@@ -7,8 +7,10 @@ services:
     #   - .env
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
+      POSTGRES_USER: user
       POSTGRES_DB: storefront_dev
+      POSTGRES_HOST: localhost
+      ENV: dev
 
     volumes:
       - './postgres:/var/lib/postgresql/data'

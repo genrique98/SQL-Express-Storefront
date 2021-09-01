@@ -3,7 +3,7 @@
       "driver": "pg",
       "host": "localhost",
       "database": "storefront_dev",
-      "user": "postgres",
+      "user": "user",
       "password": "password"
     },
     "test": {

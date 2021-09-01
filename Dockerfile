@@ -10,7 +10,7 @@ COPY .env .
 RUN npm install
 RUN npm run build
 RUN npm run config
-# RUN npm run migrate
+RUN npm run migrate
 
 EXPOSE 3000
 
