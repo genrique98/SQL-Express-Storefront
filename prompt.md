@@ -59,23 +59,4 @@ todo:
 - fix no specs found
 - readme
 
-docker exec -it sql-express-storefront_postgres_1 postgres psql -U user storefront_dev
-
-docker exec -it sql-express-storefront postgres psql -U user storefront_dev
-
-docker run --name test-postgres -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
-
-docker run --name some-postgres -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
-
-docker run postgres -e POSTGRES_PASSWORD=password 
-
-
-
-docker compose up
-docker exec -it sql-express-storefront_postgres_1 bash
-psql -U user storefront_dev
-
-\conninfo
-
-
 /////// docker run -p 5000:3000 sql-express-storefront
