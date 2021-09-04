@@ -38,19 +38,19 @@ Then, authenticate to receive token
 Use token to navigate to other endpoints succesfully
 
 ## Users
-'/users' [post] : create user
-'/auth' [post] : authenticate user
-'/users' [get] : show all users [token required]
-'/users/:id' [get] : show user with id [token required]
+- '/users' [post] : create user
+- '/auth' [post] : authenticate user
+- '/users' [get] : show all users [token required]
+- '/users/:id' [get] : show user with id [token required]
 
 ## Products
-'/products' [get] : show all users [token required]
-'/products/:id' [get] : show product with id [token required]
-'/products' [post] : create product [token required]
+- '/products' [get] : show all users [token required]
+- '/products/:id' [get] : show product with id [token required]
+- '/products' [post] : create product [token required]
 
 ## Orders
-'/orders' [get] : show all orders [token required]
-'/orders/users/:id' [get] : show current cart of user, including products and quantity in cart [token required]
-'/orders' [post] : create order [token required]
-'/orders/:id/products'[post] : add product to cart(order) of id [token required]
+- '/orders' [get] : show all orders [token required]
+- '/orders/users/:id' [get] : show current cart of user, including products and quantity in cart [token required]
+- '/orders' [post] : create order [token required]
+- '/orders/:id/products'[post] : add product to cart(order) of id [token required]
 
