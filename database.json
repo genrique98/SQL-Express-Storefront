@@ -1,9 +1,9 @@
 {
     "dev": {
       "driver": "pg",
-      "host": "postgres",
+      "host": "localhost",
       "database": "storefront_dev",
-      "user": "user",
+      "user": "postgres",
       "password": "password"
     },
     "test": {

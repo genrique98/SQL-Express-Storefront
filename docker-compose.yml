@@ -12,7 +12,7 @@ services:
 
   web:
     build: .
-    # command: ["npm", "run", "migrate"]
+    # command: ["npm", "run", "create"]
     links:
       - postgres
     image: sql-express-storefront

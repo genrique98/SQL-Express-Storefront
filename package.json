@@ -6,12 +6,13 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "npx tsc",
-    "migrate": "db-migrate --env dev up && db-migrate up",
-    "migrate-down": "db-migrate --env dev down && db-migrate down",
     "watch": "tsc-watch --onSuccess 'node ./dist/index.js'",
     "nodemon": "nodemon src/index.ts",
-    "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
-    "config": "node -r dotenv/config ./dist/database.js"
+    "config": "node -r dotenv/config ./dist/database.js",
+    "migrate": "ENV=dev db-migrate --env dev up && db-migrate up",
+    "create": "db-migrate db:create storefront_dev",
+    "delete": "db-migrate db:drop storefront_dev",
+    "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test"
   },
   "author": "Gabriel Ramirez",
   "license": "ISC",
