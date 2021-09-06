@@ -16,20 +16,18 @@ describe("User Model", () => {
   });
 
   it('create method should add a book', async () => {
-    const newUser = await store.create({
+    const numOfUsers = await (await store.index()).length;
+
+    await store.create({
       firstName: 'Gabriel',
       lastName: 'Ramirez',
       username: 'gabrielr',
       password: '123'
     });
-    const user: User = {
-        id: 1,
-        firstName: 'Gabriel',
-        lastName: 'Ramirez',
-        username: 'gabrielr',
-        password: '123'
-    };
-    expect(newUser).toContain(user);
+
+    const newNumOfUsers = await (await store.index()).length;
+
+    expect(newNumOfUsers).toBe(numOfUsers + 1);
   });
 
   it('index method should return a list of users', async () => {

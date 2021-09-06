@@ -49,25 +49,26 @@ describe("User Model", function () {
         expect(store.create).toBeDefined();
     });
     it('create method should add a book', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var newUser, user;
+        var numOfUsers, newNumOfUsers;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, store.create({
-                        firstName: 'Gabriel',
-                        lastName: 'Ramirez',
-                        username: 'gabrielr',
-                        password: '123'
-                    })];
-                case 1:
-                    newUser = _a.sent();
-                    user = {
-                        id: 1,
-                        firstName: 'Gabriel',
-                        lastName: 'Ramirez',
-                        username: 'gabrielr',
-                        password: '123'
-                    };
-                    expect(newUser).toContain(user);
+                case 0: return [4 /*yield*/, store.index()];
+                case 1: return [4 /*yield*/, (_a.sent()).length];
+                case 2:
+                    numOfUsers = _a.sent();
+                    return [4 /*yield*/, store.create({
+                            firstName: 'Gabriel',
+                            lastName: 'Ramirez',
+                            username: 'gabrielr',
+                            password: '123'
+                        })];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, store.index()];
+                case 4: return [4 /*yield*/, (_a.sent()).length];
+                case 5:
+                    newNumOfUsers = _a.sent();
+                    expect(newNumOfUsers).toBe(numOfUsers + 1);
                     return [2 /*return*/];
             }
         });

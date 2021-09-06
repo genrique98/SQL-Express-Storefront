@@ -16,16 +16,16 @@ describe("Product Model", () => {
   });
 
   it('create method should add a product', async () => {
-    const newProduct = await store.create({
+    const numOfProducts = await (await store.index()).length;
+
+    await store.create({
       name: 'book',
       price: 10,
     });
-    const product: Product = {
-        id: 1,
-        name: 'book',
-        price: 10
-    };
-    expect(newProduct).toContain(product);
+
+    const newNumOfProducts = await (await store.index()).length;
+
+    expect(newNumOfProducts).toBe(numOfProducts + 1);
   });
 
   it('index method should return a list of products', async () => {

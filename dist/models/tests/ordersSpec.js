@@ -36,9 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var crypto_1 = require("crypto");
 var orders_1 = require("../orders");
 var store = new orders_1.OrderStore();
-describe("User Model", function () {
+describe("Order Model", function () {
     it('should have a show method', function () {
         expect(store.show).toBeDefined();
     });
@@ -49,25 +50,29 @@ describe("User Model", function () {
         expect(store.addProduct).toBeDefined();
     });
     it('create method should create an order', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var newOrder, order;
+        var numOfOrders, newNumOfOrders;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, store.create({
-                        user_id: 1
-                    })];
-                case 1:
-                    newOrder = _a.sent();
-                    order = {
-                        id: 1,
-                        user_id: 1,
-                        status: 'active'
-                    };
-                    expect(newOrder).toContain(order);
+                case 0: return [4 /*yield*/, store.index()];
+                case 1: return [4 /*yield*/, (_a.sent()).length];
+                case 2:
+                    numOfOrders = _a.sent();
+                    return [4 /*yield*/, store.create({
+                            user_id: crypto_1.randomInt(10),
+                            status: 'active'
+                        })];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, store.index()];
+                case 4: return [4 /*yield*/, (_a.sent()).length];
+                case 5:
+                    newNumOfOrders = _a.sent();
+                    expect(newNumOfOrders).toBe(numOfOrders + 1);
                     return [2 /*return*/];
             }
         });
     }); });
-    it('show method should return the correct order', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('show method should return the order with id 1', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -80,21 +85,24 @@ describe("User Model", function () {
         });
     }); });
     it('addProduct method should add a product to order', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var newOrderProduct, orderProduct;
+        var numOfProductsInCart, newNumOfProductsInCart;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, store.addProduct({
-                        quantity: 1,
-                        orderId: 1
-                    })];
-                case 1:
-                    newOrderProduct = _a.sent();
-                    orderProduct = {
-                        id: 1,
-                        quantity: 1,
-                        orderId: 1
-                    };
-                    expect(newOrderProduct).toContain(orderProduct);
+                case 0: return [4 /*yield*/, store.showCart("1")];
+                case 1: return [4 /*yield*/, (_a.sent()).length];
+                case 2:
+                    numOfProductsInCart = _a.sent();
+                    return [4 /*yield*/, store.addProduct({
+                            quantity: crypto_1.randomInt(10),
+                            orderId: 1
+                        })];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, store.showCart("1")];
+                case 4: return [4 /*yield*/, (_a.sent()).length];
+                case 5:
+                    newNumOfProductsInCart = _a.sent();
+                    expect(newNumOfProductsInCart).toBe(numOfProductsInCart + 1);
                     return [2 /*return*/];
             }
         });

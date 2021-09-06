@@ -49,21 +49,24 @@ describe("Product Model", function () {
         expect(store.create).toBeDefined();
     });
     it('create method should add a product', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var newProduct, product;
+        var numOfProducts, newNumOfProducts;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, store.create({
-                        name: 'book',
-                        price: 10,
-                    })];
-                case 1:
-                    newProduct = _a.sent();
-                    product = {
-                        id: 1,
-                        name: 'book',
-                        price: 10
-                    };
-                    expect(newProduct).toContain(product);
+                case 0: return [4 /*yield*/, store.index()];
+                case 1: return [4 /*yield*/, (_a.sent()).length];
+                case 2:
+                    numOfProducts = _a.sent();
+                    return [4 /*yield*/, store.create({
+                            name: 'book',
+                            price: 10,
+                        })];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, store.index()];
+                case 4: return [4 /*yield*/, (_a.sent()).length];
+                case 5:
+                    newNumOfProducts = _a.sent();
+                    expect(newNumOfProducts).toBe(numOfProducts + 1);
                     return [2 /*return*/];
             }
         });
