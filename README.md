@@ -27,10 +27,43 @@ POSTGRES_USER=postgres
 In database.json, set "host": "postgres" and "user":"user"
 run: `docker build -t sql-express-storefront .` and `docker compose up`, then navigate to `http://localhost:3000`
 
+docker exec <container_name> npm run <migration_script>
+docker exec -it sql-express-storefront_web_1 npm run delete
+docker run -p 3000:3000 sql-express-storefront
+
 To check database connection, run:
 `docker exec -it sql-express-storefront_postgres_1 bash`, and `psql -U user storefront_dev` and `\conninfo`
 
-<!-- # Features -->
+# Database set up
+To create the tables, use psql to run:
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    firstName VARCHAR(150),
+    lastName VARCHAR(150),
+    username VARCHAR(150),
+    password VARCHAR(100)
+);
+
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(150),
+    price integer,
+    category VARCHAR(100)
+);
+
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    status VARCHAR(15),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE order_products (
+    id SERIAL PRIMARY KEY,
+    quantity INTEGER,
+    order_id INTEGER REFERENCES orders(id)
+);
 
 # Endpoints
 First, create a user in database
@@ -53,4 +86,10 @@ Use token to navigate to other endpoints succesfully
 - '/orders/users/:id' [get] : show current cart of user, including products and quantity in cart [token required]
 - '/orders' [post] : create order [token required]
 - '/orders/:id/products'[post] : add product to cart(order) of id [token required]
+
+# Testing
+To test the data models, run `npm run test`
+
+
+<!-- # Features -->
 
