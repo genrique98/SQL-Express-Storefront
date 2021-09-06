@@ -22,7 +22,7 @@ describe("Order Model", () => {
     const numOfOrders = await (await store.index()).length;
 
     await store.create({
-        user_id: randomInt(10),
+        user_id: 1,
         status: 'active'
       });
 
