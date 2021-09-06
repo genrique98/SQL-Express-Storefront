@@ -58,8 +58,6 @@ const order_routes = (app: express.Router): void => {
     app.get('/orders/users/:id', verifyAuthToken, show) // show current cart of user -> complete data shape
     app.post('/orders', verifyAuthToken, create) // create new order
     app.post('/orders/:id/products', verifyAuthToken, addProduct) // add product to cart(specific order)
-
-
 }
 
 export default order_routes

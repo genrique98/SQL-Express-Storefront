@@ -16,7 +16,7 @@ const index = async (_req: Request, res: Response) => {
 
 const show = async (req: Request, res: Response): Promise<void> => {
     try {
-        const users = await store.show(req.params.id) //(parseInt( (req.params.id as unknown) as string))
+        const users = await store.show(req.params.id)
         res.json(users)
     } catch (err) {
         console.log(err)
@@ -33,7 +33,6 @@ const create = async (req: Request, res: Response): Promise<void> => {
     }
     const { TOKEN_SECRET } = process.env;
     try {
-        //@ts-ignore
         const newUser = await store.create(user)
         let token = jwt.sign({ user: newUser }, TOKEN_SECRET as Secret);
         res.json(token)
@@ -43,15 +42,11 @@ const create = async (req: Request, res: Response): Promise<void> => {
 }
 
 const authenticate = async (req: Request, res: Response): Promise<void> => {
-    const user: User = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        username: req.body.username,
-        password: req.body.password,
-    }
+    const username = req.body.firstName;
+    const password = req.body.password;
     const { TOKEN_SECRET } = process.env;
     try {
-        const authUser = await store.authenticate(user.username, user.password)
+        const authUser = await store.authenticate(username, password)
         let token = jwt.sign({ user: authUser }, TOKEN_SECRET as Secret);
         res.json(token)
     } catch(error) {

@@ -55,7 +55,6 @@ export class UserStore {
         } catch (err) {
             throw new Error(`Could not add user ${user.firstName}. ${err}`);
         }
-    
     }
 
     async authenticate(username: string, password: string): Promise<User | null> {

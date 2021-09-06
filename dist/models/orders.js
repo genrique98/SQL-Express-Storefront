@@ -144,6 +144,30 @@ var OrderStore = /** @class */ (function () {
             });
         });
     };
+    OrderStore.prototype.showCart = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.default.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = 'SELECT quantity, order_id FROM order_products WHERE order_id=($1)';
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows];
+                    case 3:
+                        err_5 = _a.sent();
+                        throw new Error("Cannot find order " + id + ". Error: " + err_5);
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return OrderStore;
 }());
 exports.OrderStore = OrderStore;
