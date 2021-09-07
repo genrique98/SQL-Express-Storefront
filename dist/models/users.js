@@ -99,35 +99,37 @@ var UserStore = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 3, , 4]);
+                        _b.trys.push([0, 4, , 5]);
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _b.sent();
                         sql = 'INSERT INTO users (firstName, lastName, username, password) VALUES ($1, $2, $3, $4) RETURNING *';
                         _a = process.env, BCRYPT_PASSWORD = _a.BCRYPT_PASSWORD, SALT_ROUNDS = _a.SALT_ROUNDS;
-                        hash = bcrypt_1.default.hashSync(user.password + BCRYPT_PASSWORD, parseInt(SALT_ROUNDS));
+                        return [4 /*yield*/, bcrypt_1.default.hashSync(user.password + BCRYPT_PASSWORD, parseInt(SALT_ROUNDS))];
+                    case 2:
+                        hash = _b.sent();
                         args = [user.firstName, user.lastName, user.username, hash];
                         return [4 /*yield*/, conn.query(sql, args)];
-                    case 2:
+                    case 3:
                         result = _b.sent();
                         newUser = result.rows[0];
                         conn.release();
                         return [2 /*return*/, newUser];
-                    case 3:
+                    case 4:
                         err_3 = _b.sent();
                         throw new Error("Could not add user " + user.firstName + ". " + err_3);
-                    case 4: return [2 /*return*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
     };
     UserStore.prototype.authenticate = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, BCRYPT_PASSWORD, user, err_4;
+            var conn, sql, result, BCRYPT_PASSWORD, user, verified, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 5, , 6]);
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
@@ -137,22 +139,25 @@ var UserStore = /** @class */ (function () {
                         result = _a.sent();
                         BCRYPT_PASSWORD = process.env.BCRYPT_PASSWORD;
                         conn.release();
-                        if (result.rows.length) {
-                            user = result.rows[0];
-                            if (bcrypt_1.default.compareSync(password + BCRYPT_PASSWORD, user.password)) {
-                                console.log('user is verified');
-                                return [2 /*return*/, user];
-                            }
-                            else {
-                                console.log('bcrypt error');
-                                return [2 /*return*/, null];
-                            }
-                        }
-                        return [2 /*return*/, null];
+                        if (!result.rows.length) return [3 /*break*/, 4];
+                        user = result.rows[0];
+                        return [4 /*yield*/, bcrypt_1.default.compareSync(password + BCRYPT_PASSWORD, user.password)];
                     case 3:
+                        verified = _a.sent();
+                        if (verified) {
+                            console.log('user is verified');
+                            return [2 /*return*/, user];
+                        }
+                        else {
+                            console.log('bcrypt error');
+                            return [2 /*return*/, null];
+                        }
+                        _a.label = 4;
+                    case 4: return [2 /*return*/, null];
+                    case 5:
                         err_4 = _a.sent();
                         throw new Error("Could not authenticate user " + username + ". Error: " + err_4);
-                    case 4: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });

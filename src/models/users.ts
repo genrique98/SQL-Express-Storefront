@@ -41,7 +41,7 @@ export class UserStore {
             const sql = 'INSERT INTO users (firstName, lastName, username, password) VALUES ($1, $2, $3, $4) RETURNING *';
             const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
             
-            const hash = bcrypt.hashSync(
+            const hash = await bcrypt.hashSync(
                 user.password + BCRYPT_PASSWORD,
                 parseInt((SALT_ROUNDS as unknown) as string) 
             )
@@ -69,7 +69,8 @@ export class UserStore {
 
             if (result.rows.length) {
                 const user = result.rows[0]
-                if (bcrypt.compareSync(password + BCRYPT_PASSWORD, user.password)) {
+                const verified = await bcrypt.compareSync(password + BCRYPT_PASSWORD, user.password)
+                if (verified) {
                     console.log('user is verified')
                     return user
                 } else {
