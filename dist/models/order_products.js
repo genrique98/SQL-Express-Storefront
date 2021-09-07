@@ -39,12 +39,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderStore = void 0;
+exports.Order_ProductsStore = void 0;
 var database_1 = __importDefault(require("../database"));
-var OrderStore = /** @class */ (function () {
-    function OrderStore() {
+var Order_ProductsStore = /** @class */ (function () {
+    function Order_ProductsStore() {
     }
-    OrderStore.prototype.index = function () {
+    // current products in cart by user id
+    Order_ProductsStore.prototype.showCart = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, err_1;
             return __generator(this, function (_a) {
@@ -54,71 +55,47 @@ var OrderStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM orders';
-                        return [4 /*yield*/, conn.query(sql)];
+                        sql = 'SELECT orders.id, order_products.product_id as product_id, order_products.quantity, orders.user_id, orders.status FROM orders, order_products WHERE orders.user_id=($1) AND order_products.order_id = orders.id';
+                        return [4 /*yield*/, conn.query(sql, [id])];
                     case 2:
                         result = _a.sent();
                         conn.release();
                         return [2 /*return*/, result.rows];
                     case 3:
                         err_1 = _a.sent();
-                        throw new Error("Error: " + err_1);
+                        throw new Error("Cannot find user " + id + ". Error: " + err_1);
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    // show order of id
-    OrderStore.prototype.show = function (id) {
+    // add product to cart 
+    Order_ProductsStore.prototype.addProduct = function (order_product) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_2;
+            var sql, conn, args, result, order, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
+                        sql = 'INSERT INTO order_products (product_id, quantity, order_id) VALUES($1, $2, $3) RETURNING *';
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM orders WHERE id=($1)';
-                        return [4 /*yield*/, conn.query(sql, [id])];
-                    case 2:
-                        result = _a.sent();
-                        conn.release();
-                        return [2 /*return*/, result.rows[0]];
-                    case 3:
-                        err_2 = _a.sent();
-                        throw new Error("Cannot find user " + id + ". Error: " + err_2);
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    OrderStore.prototype.create = function (order) {
-        return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, args, result, newOrder, err_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1.default.connect()];
-                    case 1:
-                        conn = _a.sent();
-                        sql = 'INSERT INTO orders (user_id, status) VALUES ($1, $2) RETURNING *';
-                        args = [order.user_id, order.status];
+                        args = [order_product.productId, order_product.quantity, order_product.orderId];
                         return [4 /*yield*/, conn.query(sql, args)];
                     case 2:
                         result = _a.sent();
-                        newOrder = result.rows[0];
+                        order = result.rows[0];
                         conn.release();
-                        return [2 /*return*/, newOrder];
+                        return [2 /*return*/, order];
                     case 3:
-                        err_3 = _a.sent();
-                        throw new Error("Could not create order for user " + order.user_id + ". Error: " + err_3);
+                        err_2 = _a.sent();
+                        throw new Error("Could not add product to order " + order_product.orderId + ": " + err_2);
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    return OrderStore;
+    return Order_ProductsStore;
 }());
-exports.OrderStore = OrderStore;
+exports.Order_ProductsStore = Order_ProductsStore;
