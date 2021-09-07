@@ -7,14 +7,16 @@ describe("Order Endpoint", () => {
   let token: string = ''
 
   it('Creates an order', async () => {
-    const authRes = await request.post('/auth').send(
-        {
-            username: 'testUser',
-            password: 'password'
-        }
+    const userRes = await request.post('/users').send(
+      {
+          firstName: 'testName',
+          lastName: 'testName',
+          username: 'testUser',
+          password: 'password'
+      }
     ).set('Accept', 'application/json');
     
-    token = "Bearer " + authRes.body;
+    token = "Bearer " + userRes.body;
 
     const response = await request.post('/orders').send(
         {
@@ -39,6 +41,14 @@ describe("Order Endpoint", () => {
   });
 
   it('Adds product to order', async () => {
+
+    await request.post('/products').send(
+      {
+          name: 'book',
+          price: 10,
+          category: 'fiction'
+      }
+    ).set('Authorization', token);
 
     const response = await request.post('/orders/1/products').send(
         {

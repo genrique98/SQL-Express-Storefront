@@ -45,16 +45,18 @@ var request = supertest_1.default(__1.default);
 describe("Order Endpoint", function () {
     var token = '';
     it('Creates an order', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var authRes, response;
+        var userRes, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.post('/auth').send({
+                case 0: return [4 /*yield*/, request.post('/users').send({
+                        firstName: 'testName',
+                        lastName: 'testName',
                         username: 'testUser',
                         password: 'password'
                     }).set('Accept', 'application/json')];
                 case 1:
-                    authRes = _a.sent();
-                    token = "Bearer " + authRes.body;
+                    userRes = _a.sent();
+                    token = "Bearer " + userRes.body;
                     return [4 /*yield*/, request.post('/orders').send({
                             user_id: 1,
                             status: 'active'
@@ -94,11 +96,18 @@ describe("Order Endpoint", function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.post('/orders/1/products').send({
-                        product_id: 1,
-                        quantity: 2
+                case 0: return [4 /*yield*/, request.post('/products').send({
+                        name: 'book',
+                        price: 10,
+                        category: 'fiction'
                     }).set('Authorization', token)];
                 case 1:
+                    _a.sent();
+                    return [4 /*yield*/, request.post('/orders/1/products').send({
+                            product_id: 1,
+                            quantity: 2
+                        }).set('Authorization', token)];
+                case 2:
                     response = _a.sent();
                     expect(response.status).toBe(200);
                     return [2 /*return*/];
