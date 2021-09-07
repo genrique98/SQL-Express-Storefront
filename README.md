@@ -4,16 +4,16 @@ Your `README.md` must include instructions for setting up and running your proje
 # Local Set Up 
 Add a .env file with the following variables:
 
-POSTGRES_HOST=postgres
-POSTGRES_USER=user
-POSTGRES_PASSWORD=password
-POSTGRES_DB=storefront_dev
-POSTGRES_TEST_DB=storefront_test
-ENV=dev
-BCRYPT_PASSWORD=(your_password)
-SALT_ROUNDS=10
-TOKEN_SECRET=(your_token)
-PORT=3000
+- POSTGRES_HOST=postgres
+- POSTGRES_USER=user
+- POSTGRES_PASSWORD=password
+- POSTGRES_DB=storefront_dev
+- POSTGRES_TEST_DB=storefront_test
+- ENV=dev
+- BCRYPT_PASSWORD=(your_password)
+- SALT_ROUNDS=10
+- TOKEN_SECRET=(your_token)
+- PORT=3000
 
 run: `npm install` and `npm run watch`, then navigate to `http://localhost:3000`
 
