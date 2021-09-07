@@ -37,50 +37,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var orders_1 = require("../orders");
-var store = new orders_1.OrderStore();
-describe("Order Model", function () {
-    it('should have a show method', function () {
-        expect(store.show).toBeDefined();
+var order_products_1 = require("../order_products");
+var store = new order_products_1.Order_ProductsStore();
+var orderStore = new orders_1.OrderStore();
+describe("OrderProduct Model", function () {
+    it('should have a showCart method', function () {
+        expect(store.showCart).toBeDefined();
     });
-    it('should have an create method', function () {
-        expect(store.create).toBeDefined();
+    it('should have an addProduct method', function () {
+        expect(store.addProduct).toBeDefined();
     });
-    it('create method should create an order', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var numOfOrders, newNumOfOrders;
+    it('addProduct method should add a product to order', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var numOfProductsInCart, newNumOfProductsInCart;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, store.index()];
+                case 0: return [4 /*yield*/, store.showCart("1")];
                 case 1: return [4 /*yield*/, (_a.sent()).length];
                 case 2:
-                    numOfOrders = _a.sent();
-                    return [4 /*yield*/, store.create({
+                    numOfProductsInCart = _a.sent();
+                    return [4 /*yield*/, orderStore.create({
                             user_id: 1,
                             status: 'active'
                         })];
                 case 3:
                     _a.sent();
-                    return [4 /*yield*/, store.index()];
-                case 4: return [4 /*yield*/, (_a.sent()).length];
-                case 5:
-                    newNumOfOrders = _a.sent();
-                    expect(newNumOfOrders).toBe(numOfOrders + 1);
+                    return [4 /*yield*/, store.addProduct({
+                            productId: 2,
+                            quantity: 1
+                        })];
+                case 4:
+                    _a.sent();
+                    return [4 /*yield*/, store.showCart("1")];
+                case 5: return [4 /*yield*/, (_a.sent()).length];
+                case 6:
+                    newNumOfProductsInCart = _a.sent();
+                    expect(newNumOfProductsInCart).toBe(numOfProductsInCart);
                     return [2 /*return*/];
             }
         });
     }); });
-    it('show method should return the order with id 1', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('show method should return the products in order with id 1', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, store.create({
-                        user_id: 1,
-                        status: 'active'
-                    })];
+                case 0: return [4 /*yield*/, store.showCart("1")];
                 case 1:
-                    _a.sent();
-                    return [4 /*yield*/, store.show("1")];
-                case 2:
                     result = _a.sent();
+                    // console.log(result)
                     expect(result).toBeTruthy;
                     return [2 /*return*/];
             }
