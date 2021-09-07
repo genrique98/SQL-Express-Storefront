@@ -52,7 +52,7 @@ const showCart = async (req: Request, res: Response): Promise<void> => {
 const addProduct = async (req: Request, res: Response): Promise<void> => {
     let request = req.body;
     const order_product: Order_product = {
-        productId: request.id,
+        productId: request.product_id,
         quantity: request.quantity,
         orderId: parseInt( (req.params.id as unknown) as string),
     }

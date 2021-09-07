@@ -136,7 +136,7 @@ var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, 
             case 0:
                 request = req.body;
                 order_product = {
-                    productId: request.id,
+                    productId: request.product_id,
                     quantity: request.quantity,
                     orderId: parseInt(req.params.id),
                 };
