@@ -21,6 +21,7 @@ describe("Product Model", () => {
     await store.create({
       name: 'book',
       price: 10,
+      category: 'fiction'
     });
 
     const newNumOfProducts = await (await store.index()).length;

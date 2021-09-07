@@ -59,6 +59,7 @@ describe("Product Model", function () {
                     return [4 /*yield*/, store.create({
                             name: 'book',
                             price: 10,
+                            category: 'fiction'
                         })];
                 case 3:
                     _a.sent();
