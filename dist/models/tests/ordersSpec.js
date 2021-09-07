@@ -37,8 +37,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var orders_1 = require("../orders");
+var users_1 = require("../users");
 var store = new orders_1.OrderStore();
 describe("Order Model", function () {
+    beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+        var userStore;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userStore = new users_1.UserStore();
+                    return [4 /*yield*/, userStore.create({
+                            firstName: 'Dummy',
+                            lastName: 'User',
+                            username: 'dummyuser',
+                            password: '123456'
+                        })];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
     it('should have a show method', function () {
         expect(store.show).toBeDefined();
     });

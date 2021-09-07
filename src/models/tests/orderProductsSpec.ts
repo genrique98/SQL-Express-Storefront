@@ -1,10 +1,29 @@
 import { OrderStore } from '../orders';
 import { Order_product, Order_ProductsStore } from '../order_products'
+import { ProductStore } from '../products';
+import { UserStore } from '../users';
 
 const store = new Order_ProductsStore()
 const orderStore = new OrderStore()
 
 describe("OrderProduct Model", () => {
+
+  beforeAll( async () => {
+    const userStore = new UserStore()
+    await userStore.create({
+      firstName: 'Dummy',
+      lastName: 'User',
+      username: 'dummyuser',
+      password: '123456'
+    });
+
+    const productStore = new ProductStore()
+    await productStore.create({
+      name: 'book',
+      price: 10,
+      category: 'fiction'
+    });
+  })
 
   it('should have a showCart method', () => {
     expect(store.showCart).toBeDefined();
@@ -23,7 +42,7 @@ describe("OrderProduct Model", () => {
     });
 
     await store.addProduct({
-      productId: 2,
+      productId: 1,
       quantity: 1
     });
 

@@ -1,8 +1,19 @@
 import { Order, OrderStore } from '../orders';
+import { UserStore } from '../users';
 
 const store = new OrderStore()
 
 describe("Order Model", () => {
+
+  beforeAll( async () => {
+    const userStore = new UserStore()
+    await userStore.create({
+      firstName: 'Dummy',
+      lastName: 'User',
+      username: 'dummyuser',
+      password: '123456'
+    });
+  })
 
   it('should have a show method', () => {
     expect(store.show).toBeDefined();

@@ -38,9 +38,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var orders_1 = require("../orders");
 var order_products_1 = require("../order_products");
+var products_1 = require("../products");
+var users_1 = require("../users");
 var store = new order_products_1.Order_ProductsStore();
 var orderStore = new orders_1.OrderStore();
 describe("OrderProduct Model", function () {
+    beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+        var userStore, productStore;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userStore = new users_1.UserStore();
+                    return [4 /*yield*/, userStore.create({
+                            firstName: 'Dummy',
+                            lastName: 'User',
+                            username: 'dummyuser',
+                            password: '123456'
+                        })];
+                case 1:
+                    _a.sent();
+                    productStore = new products_1.ProductStore();
+                    return [4 /*yield*/, productStore.create({
+                            name: 'book',
+                            price: 10,
+                            category: 'fiction'
+                        })];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
     it('should have a showCart method', function () {
         expect(store.showCart).toBeDefined();
     });
@@ -62,7 +90,7 @@ describe("OrderProduct Model", function () {
                 case 3:
                     _a.sent();
                     return [4 /*yield*/, store.addProduct({
-                            productId: 2,
+                            productId: 1,
                             quantity: 1
                         })];
                 case 4:
