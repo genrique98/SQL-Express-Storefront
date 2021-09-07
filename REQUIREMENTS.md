@@ -46,4 +46,4 @@ These are the notes from a meeting with the frontend developer that describe wha
 - users (id: SERIAL PRIMARY KEY, firstName: VARCHAR(150),lastName: VARCHAR(150), username: VARCHAR(150), password: VARCHAR(100))
 - products (id: SERIAL PRIMARY KEY, name: VARCHAR(150), price: integer, category: VARCHAR(100))
 - orders (id: SERIAL PRIMARY KEY, user_id: INTEGER [foreign key to users table], status: VARCHAR(15))
-- order_products (id: SERIAL PRIMARY KEY, quantity: INTEGER, order_id: INTEGER REFERENCES orders(id))
+- order_products (product_id: INTEGER REFERENCES products(id), quantity: INTEGER, order_id: INTEGER REFERENCES orders(id))
