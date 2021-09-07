@@ -34,7 +34,7 @@ const create = async (req: Request, res: Response): Promise<void> => {
     try {
         const newProduct = await store.create(product)
         let token = jwt.sign({ product: newProduct }, TOKEN_SECRET as Secret);
-        res.json(token)
+        res.json(newProduct)
     } catch (err) {
         console.log(err)
     }

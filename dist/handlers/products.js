@@ -100,7 +100,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 2:
                 newProduct = _a.sent();
                 token = jsonwebtoken_1.default.sign({ product: newProduct }, TOKEN_SECRET);
-                res.json(token);
+                res.json(newProduct);
                 return [3 /*break*/, 4];
             case 3:
                 err_3 = _a.sent();
