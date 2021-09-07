@@ -112,21 +112,17 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, TOKEN_SECRET, authUser, token, error_1;
+    var username, password, TOKEN_SECRET, authUser, token, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                user = {
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    username: req.body.username,
-                    password: req.body.password,
-                };
+                username = req.body.firstName;
+                password = req.body.password;
                 TOKEN_SECRET = process.env.TOKEN_SECRET;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, store.authenticate(user.username, user.password)];
+                return [4 /*yield*/, store.authenticate(username, password)];
             case 2:
                 authUser = _a.sent();
                 token = jsonwebtoken_1.default.sign({ user: authUser }, TOKEN_SECRET);
