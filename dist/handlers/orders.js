@@ -40,9 +40,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var orders_1 = require("../models/orders");
+var order_products_1 = require("../models/order_products");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var auth_1 = __importDefault(require("../middleware/auth"));
 var store = new orders_1.OrderStore();
+var orderProductStore = new order_products_1.Order_ProductsStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var orders, err_1;
     return __generator(this, function (_a) {
@@ -98,7 +100,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 2:
                 newOrder = _a.sent();
                 token = jsonwebtoken_1.default.sign({ order: newOrder }, TOKEN_SECRET);
-                res.json(token);
+                res.json(newOrder);
                 return [3 /*break*/, 4];
             case 3:
                 err_3 = _a.sent();
@@ -108,37 +110,58 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
+var showCart = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var order, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, orderProductStore.showCart(req.params.id)];
+            case 1:
+                order = _a.sent();
+                res.json(order);
+                return [3 /*break*/, 3];
+            case 2:
+                err_4 = _a.sent();
+                console.log(err_4);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var request, order_product, addedProduct, err_4;
+    var request, order_product, addedProduct, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 request = req.body;
                 order_product = {
+                    productId: request.id,
                     quantity: request.quantity,
-                    orderId: parseInt(req.params.id), // req.body.orderId,
+                    orderId: parseInt(req.params.id),
                 };
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, store.addProduct(order_product)];
+                return [4 /*yield*/, orderProductStore.addProduct(order_product)];
             case 2:
                 addedProduct = _a.sent();
                 res.json(addedProduct);
                 return [3 /*break*/, 4];
             case 3:
-                err_4 = _a.sent();
+                err_5 = _a.sent();
                 res.status(400);
-                res.json(err_4);
+                res.json(err_5);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
 var order_routes = function (app) {
-    app.get('/orders', auth_1.default, index); // show all orders (admin auth)
-    app.get('/orders/users/:id', auth_1.default, show); // show current cart of user -> complete data shape
     app.post('/orders', auth_1.default, create); // create new order
-    app.post('/orders/:id/products', auth_1.default, addProduct); // add product to cart(specific order)
+    app.get('/orders', auth_1.default, index); // show all orders (admin auth)
+    app.get('/orders/:id', auth_1.default, show); // show order of id
+    app.post('/orders/:id/products', auth_1.default, addProduct); // add product to cart(specific order id) 
+    app.get('/orders/users/:id', auth_1.default, showCart); // show current cart of user -> complete data shape
 };
 exports.default = order_routes;
