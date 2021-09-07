@@ -62,7 +62,6 @@ First, create a user in the database, authenticate to receive token, and then, u
     - { "username": "gabrielr", "password": "12345678" }
 - '/users' [get] : [token required]
     - shows all users in database
-    - 
 - '/users/:id' [get] : [token required]
     - shows user with specific id 
 
@@ -104,3 +103,4 @@ First, create an order in database, and create a cart by adding products to an o
     - Creating / authenticating a user will return a token
 - Errors:
     - When sending [post] requests for creating orders or adding products to an order, the id in the request must already exist in their referenced tables (user_id in users table, for example), otherwise the request would violate the foreign key constraint in SQL.
+    - Sending [post] requests with incomplete objects violates the not null constraint in SQL.
