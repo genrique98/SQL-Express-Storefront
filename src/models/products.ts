@@ -4,7 +4,7 @@ export type Product = {
     id?: number;
     name: string;
     price: number;
-    category?: string;
+    category: string;
 }
 export class ProductStore {
     async index(): Promise<Product[]> {
